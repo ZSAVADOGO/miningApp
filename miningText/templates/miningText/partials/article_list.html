@@ -1,0 +1,7 @@
+{% for article in articles %}
+    {% include "miningText/partials/article_item.html" %}
+{% empty %}
+    <li class="text-sm text-gray-400 italic text-center">
+        Aucun résultat
+    </li>
+{% endfor %}

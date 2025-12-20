@@ -1,0 +1,53 @@
+{% extends 'miningText/base.html' %}
+
+{% block title %}{{ article.titre }}{% endblock %}
+
+{% block content %}
+<article class="bg-white rounded-xl shadow p-8">
+
+    <!-- Titre -->
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        {{ article.titre }}
+    </h1>
+
+    <!-- Métadonnées -->
+    <p class="text-sm text-gray-500 mb-6">
+        Publié le {{ article.date_publication|date:"d/m/Y à H:i" }}
+        · par <span class="font-medium text-gray-700">{{ article.auteur }}</span>
+    </p>
+
+    <!-- Contenu -->
+    <div class="prose prose-gray max-w-none mb-8">
+        {{ article.contenu|linebreaks }}
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap gap-4 border-t pt-6">
+
+        <a
+            href="{% url 'index' %}"
+            class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg
+                   hover:bg-gray-300 transition"
+        >
+            ← Retour
+        </a>
+
+        <a
+            href="{% url 'update' article.id %}"
+            class="bg-yellow-500 text-white px-5 py-2 rounded-lg
+                   hover:bg-yellow-600 transition"
+        >
+            Modifier
+        </a>
+
+        <a
+            href="{% url 'delete' article.id %}"
+            class="bg-red-600 text-white px-5 py-2 rounded-lg
+                   hover:bg-red-700 transition"
+        >
+            Supprimer
+        </a>
+
+    </div>
+</article>
+{% endblock %}

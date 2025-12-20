@@ -1,0 +1,35 @@
+<li>
+    <div onclick="loadArticle({{ article.id }}, this)"
+         class="article-btn cursor-pointer w-full px-3 py-2 rounded-lg border
+                hover:bg-blue-50 transition text-sm">
+
+        <p class="font-medium text-gray-800 truncate">
+            {{ article.titre }} • {{ article.auteur }}
+        </p>
+
+        <div class="flex items-center justify-between text-xs text-gray-500 mt-1">
+
+            <!-- GAUCHE : date -->
+            <span>
+                {{ article.date_publication|date:"d/m/Y" }}
+            </span>
+
+            <!-- DROITE : actions -->
+            <div class="flex items-center gap-1">
+                <a href="{% url 'update' article.id %}"
+                   class="px-2 py-0.5 bg-green-700 text-white rounded
+                          hover:bg-green-800 transition text-[11px]">
+                    Modif
+                </a>
+
+                <a href="{% url 'delete' article.id %}"
+                   class="px-2 py-0.5 bg-red-600 text-white rounded
+                          hover:bg-red-700 transition text-[11px]">
+                    Supp
+                </a>
+            </div>
+
+        </div>
+    </div>
+</li>
+

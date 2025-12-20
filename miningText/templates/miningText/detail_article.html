@@ -1,0 +1,51 @@
+<h2 class="text-2xl font-bold text-gray-900 mb-1">
+    {{ article.titre }}
+</h2>
+
+<p class="text-sm text-gray-500 mb-4">
+    Publié le {{ article.date_publication|date:"d/m/Y à H:i" }}
+    · {{ article.auteur }}
+</p>
+
+<div class="prose max-w-none mb-6">
+    {{ article.contenu|linebreaks }}
+</div>
+
+<hr class="my-6">
+
+<h3 class="text-lg font-semibold text-gray-800 mb-3">
+    Analyse du contenu
+</h3>
+
+<div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-blue-50 rounded-lg p-4">
+        <p class="text-xs text-gray-500">Mots totaux</p>
+        <p class="text-xl font-bold text-blue-700">
+            {{ analyse.total_mots_contenu }}
+        </p>
+    </div>
+
+    <div class="bg-green-50 rounded-lg p-4">
+        <p class="text-xs text-gray-500">Mots pertinents</p>
+        <p class="text-xl font-bold text-green-700">
+            {{ analyse.total_mots_pertinents }}
+        </p>
+    </div>
+</div>
+
+<table class="w-full text-sm border rounded-lg overflow-hidden">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-4 py-2 text-left">Mot</th>
+            <th class="px-4 py-2 text-right">Occurrences</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mot, freq in analyse.frequences %}
+        <tr class="border-t">
+            <td class="px-4 py-2">{{ mot }}</td>
+            <td class="px-4 py-2 text-right font-medium">{{ freq }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

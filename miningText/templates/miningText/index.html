@@ -1,0 +1,42 @@
+{% extends 'miningText/base.html' %}
+
+{% block content %}
+
+<div class="flex items-center justify-between mb-6">
+   
+    <a
+        href="{% url 'create' %}"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg
+               hover:bg-blue-700 transition"
+    >
+        Ajouter
+    </a>
+
+     <h2 class="text-2xl font-semibold text-gray-900">
+        Tous les articles
+    </h2>
+
+</div>
+
+
+{% if articles %}
+    {% for article in articles %}
+    <div class="article">
+        <h3>{{ article.titre }}</h3>
+        <p>{{ article.contenu|truncatewords:30 }}</p>
+        <small>Publié le : {{ article.date_publication|date:"d/m/Y à H:i" }} par : {{article.auteur}}</small>
+        <br>
+        <a href="{% url 'detail' article.id %}" class="btn btn-sm btn-primary">Lire</a>
+        <a href="{% url 'update' article.id %}" class="btn btn-sm btn-warning">Modifier</a>
+        <a href="{% url 'delete' article.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+    
+<br /> 
+    
+            <hr>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>Aucun article pour le moment.</p>
+    <a href="{% url 'create' %}" class="btn btn-success">Créer le premier article</a>
+{% endif %}
+{% endblock %}

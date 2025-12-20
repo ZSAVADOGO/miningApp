@@ -1,0 +1,20 @@
+{% extends 'miningText/base.html' %}
+
+{% block title %}Supprimer {{ article.titre }}{% endblock %}
+
+{% block content %}
+<h1>Supprimer l'article</h1>
+
+<div class="article">
+    <h2>{{ article.titre }}</h2>
+    <p>{{ article.contenu|truncatewords:50 }}</p>
+</div>
+
+<p><strong>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</strong></p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+    <a href="{% url 'detail' article.id %}" class="btn btn-primary">Annuler</a>
+</form>
+{% endblock %}

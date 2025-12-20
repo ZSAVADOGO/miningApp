@@ -12,7 +12,6 @@
     --color-red-700: oklch(50.5% 0.213 27.518);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
     --color-yellow-600: oklch(68.1% 0.162 75.834);
-    --color-yellow-700: oklch(55.4% 0.135 66.442);
     --color-green-50: oklch(98.2% 0.018 155.826);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-green-700: oklch(52.7% 0.154 150.069);
@@ -795,23 +794,11 @@
   .h-screen {
     height: 100vh;
   }
-  .max-h-\[80vh\] {
-    max-height: 80vh;
-  }
-  .max-h-\[85vh\] {
-    max-height: 85vh;
-  }
-  .max-h-\[90vh\] {
-    max-height: 90vh;
-  }
   .min-h-\[80vh\] {
     min-height: 80vh;
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .w-48 {
-    width: calc(var(--spacing) * 48);
   }
   .w-full {
     width: 100%;
@@ -848,9 +835,6 @@
   }
   .grid-cols-\[2fr_3fr_3fr\] {
     grid-template-columns: 2fr 3fr 3fr;
-  }
-  .flex-col {
-    flex-direction: column;
   }
   .flex-wrap {
     flex-wrap: wrap;
@@ -1216,11 +1200,6 @@
   @media (hover: hover) {
     .hover\:bg-yellow-600:hover {
       background-color: var(--color-yellow-600);
-    }
-  }
-  @media (hover: hover) {
-    .hover\:bg-yellow-700:hover {
-      background-color: var(--color-yellow-700);
     }
   }
   @media (hover: hover) {

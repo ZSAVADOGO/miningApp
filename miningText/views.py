@@ -9,8 +9,8 @@ from django.db.models import Q
 
 #Pour l'annalyse et le 
 import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('stopwords')
 
 from collections import Counter
 from nltk.tokenize import word_tokenize
@@ -34,25 +34,6 @@ def index(request):
     return render(request, 'miningText/index.html', {'articles': articles})
 
 # Recherche - 
-""" def search_articles(request):
-    query = request.GET.get("q", "").strip()
-
-    articles = Article.objects.all().order_by("-date_publication")
-
-    if query:
-        articles = articles.filter(
-            Q(titre__icontains=query) |
-            Q(auteur__icontains=query) |
-            Q(contenu__icontains=query)
-        )
-
-    html = render_to_string(
-        "miningText/partials/article_list.html",
-        {"articles": articles}
-    )
-
-    return JsonResponse({"html": html}) """
-
 def search_articles(request):
     q = request.GET.get("q", "").strip()
 
@@ -159,6 +140,6 @@ def delete(request, id):
     
     if request.method == 'POST':
         article.delete()
-        return redirect('index')
+        return redirect('transform')
     
     return render(request, 'miningText/delete.html', {'article': article})

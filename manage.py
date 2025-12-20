@@ -2,6 +2,10 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+
 
 
 def main():

@@ -1,0 +1,41 @@
+{% if articles %}
+<div >
+    {% for article in articles %}
+        <article class="pb-4 border-b border-gray-300 last:border-b-0">
+
+            <h3 class="text-lg font-semibold text-gray-900">
+                {{ article.titre }}
+            </h3>
+
+            <p class="text-gray-700 mt-2">
+                {{ article.contenu|truncatewords:40 }}
+            </p>
+
+            <small class="block text-xs text-gray-500 mt-2">
+                Publié le {{ article.date_publication|date:"d/m/Y" }}
+                 par {{ article.auteur }}
+            </small>
+
+            <div class="flex gap-2 mt-3">
+                <a href="{% url 'detail' article.id %}" class="btn btn-sm btn-primary">
+                    Lire
+                </a>
+                <a href="{% url 'update' article.id %}" class="btn btn-sm btn-warning">
+                    Modifier
+                </a>
+                <a href="{% url 'delete' article.id %}" class="btn btn-sm btn-danger">
+                    Supprimer
+                </a>
+            </div>
+
+        </article>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-gray-500 italic">
+    Aucun article pour le moment.
+</p>
+<a href="{% url 'create' %}" class="btn btn-success mt-3">
+    Créer le premier article
+</a>
+{% endif %}

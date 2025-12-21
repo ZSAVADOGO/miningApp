@@ -16,6 +16,8 @@ urlpatterns = [
     path('delete/<int:id>/', views.delete, name='delete'),
     #path("ajax/search/", views.search_articles, name="search_articles"),
     path("search/", views.search_articles, name="article_search"),
+    path("search_index/", views.search_articles_index, name="search_articles_index"),
+
 
         # Route AJAX pour récupérer le détail d’un article
     #path('ajax/article/<int:article_id>/', views.transform, name='transform'),

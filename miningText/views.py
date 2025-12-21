@@ -33,6 +33,23 @@ def index(request):
     articles = Article.objects.order_by('-id')
     return render(request, 'miningText/index.html', {'articles': articles})
 
+def search_articles_index(request):
+    query = request.GET.get("q", "")
+
+    articles = Article.objects.filter(
+        Q(titre__icontains=query) |
+        Q(auteur__icontains=query) |
+        Q(contenu__icontains=query)
+    ).order_by("-date_publication")
+
+    html = render_to_string(
+        "miningText/partials/article_list_index.html",
+        {"articles": articles},
+        request=request
+    )
+
+    return JsonResponse({"html": html})
+
 # Recherche - 
 def search_articles(request):
     q = request.GET.get("q", "").strip()

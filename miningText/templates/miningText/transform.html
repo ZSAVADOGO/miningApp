@@ -2,7 +2,6 @@
 {% block content %}
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[80vh]">
-{% comment %} <div class="grid grid-cols-[2fr_3fr_3fr] gap-6 min-h-[80vh]"> {% endcomment %}
 <!-- COLONNE GAUCHE : Liste des articles -->
     <div class="bg-white rounded-xl shadow p-4 overflow-y-auto">    
 
@@ -13,18 +12,13 @@
     </h2>
 
     <!-- Input et bouton à droite -->
-    <div class="flex items-center gap-2">
+    <div class="relative flex items-center gap-2">
          <!-- Bouton Ajouter -->
         <a href="{% url 'create' %}" 
            class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
            +Ajouter
         </a>
-        <!-- Input recherche -->
-        {% comment %} <input 
-            type="text" 
-            placeholder="Rechercher..." 
-            class="px-3 py-1.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        > {% endcomment %}
+            <!-- Champ de recherche -->
           <input
             type="text"
             id="searchInput"
@@ -33,50 +27,22 @@
                    focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
 
+         <button
+        id="clearSearch"
+        type="button"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-white bg-red-600 hover:bg-red-700 px-0.3 py-0.3 rounded-lg z-5 hidden"
+        title="Effacer la recherche"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
     </div>
 </div>
 
 
-       {% comment %}  <ul class="space-y-2">
-            {% for article in articles %}
-
-            <li>
-    <div onclick="loadArticle({{ article.id }}, this)"
-         class="article-btn cursor-pointer w-full px-3 py-2 rounded-lg border
-                hover:bg-blue-50 transition text-sm">
-
-        <p class="font-medium text-gray-800 truncate">
-            {{ article.titre }} • {{ article.auteur }}
-        </p>
-
-        <div class="flex items-center justify-between text-xs text-gray-500 mt-1">
-
-            <!-- GAUCHE : date -->
-            <span>
-                {{ article.date_publication|date:"d/m/Y" }}
-            </span>
-
-            <!-- DROITE : actions -->
-            <div class="flex items-center gap-1">
-                <a href="{% url 'update' article.id %}"
-                   class="px-2 py-0.5 bg-green-700 text-white rounded
-                          hover:bg-green-800 transition text-[11px]">
-                    Modif
-                </a>
-
-                <a href="{% url 'delete' article.id %}"
-                   class="px-2 py-0.5 bg-red-600 text-white rounded
-                          hover:bg-red-700 transition text-[11px]">
-                    Supp
-                </a>
-            </div>
-
-        </div>
-    </div>
-</li>
-
-            {% endfor %}
-        </ul> {% endcomment %}
 <ul id="article-list" class="space-y-2">
     {% for article in articles %}
         {% include "miningText/partials/article_item.html" %}
@@ -125,8 +91,29 @@ function loadArticle(id, btn) {
 <script>
 const searchInput = document.getElementById("searchInput");
 const articleList = document.getElementById("article-list");
+const clearBtn = document.getElementById("clearSearch");
 
 let timer = null;
+
+// Afficher/masquer le bouton clear
+searchInput.addEventListener("input", () => {
+    if(searchInput.value.trim() !== "") {
+        clearBtn.classList.remove("hidden");
+    } else {
+        clearBtn.classList.add("hidden");
+    }
+});
+
+// Bouton clear
+clearBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    clearBtn.classList.add("hidden");
+    fetch(`/miningText/search/?q=`)
+        .then(response => response.text())
+        .then(html => {
+            articleList.innerHTML = html;
+        });
+});
 
 searchInput.addEventListener("input", function () {
     clearTimeout(timer);

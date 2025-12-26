@@ -5,4 +5,3 @@ pdfplumber
 python-docx
 nltk
 spacy
-unicodedata

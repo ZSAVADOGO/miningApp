@@ -12,8 +12,12 @@
             </p>
 
             <small class="block text-xs text-gray-500 mt-2">
-                Publié le {{ article.date_publication|date:"d/m/Y" }}
-                 par {{ article.auteur }}
+                 <B>Publié le</B> {{ article.date_publication|date:"d/m/Y" }}
+                 <B>par </B> {{ article.auteur }}
+            </small>
+            <small class="block text-xs text-gray-500 mt-2">
+                <B> Source: </B> {{ article.source}} 
+                <B>    lien: </B> <a target="_blank" href="{{ article.source_lien|truncatewords:10  }}">{{ article.source_lien|truncatewords:40 }}</a>
             </small>
 
             <div class="flex gap-2 mt-3">

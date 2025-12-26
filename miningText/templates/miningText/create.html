@@ -13,13 +13,15 @@
     <form method="POST" enctype="multipart/form-data" class="space-y-4">
         {% csrf_token %}
 
-        <!-- Titre -->
-        <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">
-                Titre
-            </label>
-            <input
-                type="text"
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- Auteur -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Titre
+                </label>
+                <input
+                     type="text"
                 name="titre"
                 required
                 class="w-full rounded-lg
@@ -33,7 +35,32 @@
                        hover:border-gray-400
                        transition"
                 placeholder="Titre de l’article"
-            >
+                >
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                    Auteur
+                </label>
+                <input
+                    type="text"
+                    name="auteur"
+                    required
+                    class="w-full rounded-lg
+                           border-2 border-gray-300
+                           bg-gray-50
+                           px-3 py-2
+                           shadow-sm
+                           focus:outline-none
+                           focus:border-blue-500
+                           focus:ring-2 focus:ring-blue-200
+                           hover:border-gray-400
+                           transition"
+                    placeholder="Auteur de l’article"
+                >
+            </div>
+
         </div>
 
         <!-- Contenu -->
@@ -60,42 +87,67 @@
                 placeholder="Écrivez ou collez le contenu de l’article ici…"
             ></textarea>
 
-             <!-- Fichier -->
-        <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">
-                Discours (fichier)
-            </label>
-            <input
-                type="file"
-                name="discours"
-                id="discours"
-                accept=".txt"
-                class="block w-full text-sm text-gray-700
-                       rounded-lg border-2 border-dashed border-gray-300
-                       bg-gray-50
-                       cursor-pointer
-                       file:mr-3 file:py-2 file:px-3
-                       file:rounded-md file:border-0
-                       file:bg-blue-600 file:text-white
-                       hover:file:bg-blue-700
-                       hover:border-gray-400
-                       transition"
-            />
-        </div>
+              <!-- On passe à 3 colonnes sur tablette/ordinateur (md:grid-cols-3) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <!-- Fichier : occupe 2 colonnes (md:col-span-2) -->
+    <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Discours (fichier)
+        </label>
+        <input
+            type="file"
+            name="discours"
+            id="discours"
+            accept=".txt"
+            class="block w-full text-sm text-gray-700
+                   rounded-lg border-2 border-dashed border-gray-300
+                   bg-gray-50
+                   cursor-pointer
+                   file:mr-3 file:py-2 file:px-3
+                   file:rounded-md file:border-0
+                   file:bg-blue-600 file:text-white
+                   hover:file:bg-blue-700
+                   hover:border-gray-400
+                   transition"
+        />
+    </div>
+
+    <!-- Date : occupe 1 seule colonne (comportement par défaut) -->
+    <div class="md:col-span-1">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+            Date de publication
+        </label>
+        <input
+            type="date"
+            name="date_publication"
+            required
+            class="w-full rounded-lg
+                   border-2 border-gray-300
+                   bg-gray-50
+                   px-3 py-2
+                   shadow-sm
+                   focus:ring-2 focus:ring-blue-200
+                   focus:border-blue-500
+                   transition"
+        >
+    </div>
+</div>
+
 
         </div>
 
-        <!-- Grid -->
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <!-- Auteur -->
+            <!-- Source -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">
-                    Auteur
+                    Source
                 </label>
                 <input
                     type="text"
-                    name="auteur"
+                    name="source"
                     required
                     class="w-full rounded-lg
                            border-2 border-gray-300
@@ -114,11 +166,11 @@
             <!-- Date -->
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">
-                    Date de publication
+                    Lien de la source
                 </label>
                 <input
-                    type="date"
-                    name="date_publication"
+                    type="text"
+                    name="source_lien"
                     required
                     class="w-full rounded-lg
                            border-2 border-gray-300
@@ -150,7 +202,7 @@
                        hover:bg-blue-700 active:scale-95
                        transition font-medium"
             >
-                Analyser
+                Ajouter
             </button>
         </div>
 

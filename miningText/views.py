@@ -30,7 +30,7 @@ from .models import Article
 
 # READ - Lister tous les articles
 def index(request):
-    articles = Article.objects.order_by('-id')
+    articles = Article.objects.order_by('-date_publication','-id')
     return render(request, 'miningText/index.html', {'articles': articles})
 
 def search_articles_index(request):
@@ -40,7 +40,7 @@ def search_articles_index(request):
         Q(titre__icontains=query) |
         Q(auteur__icontains=query) |
         Q(contenu__icontains=query)
-    ).order_by("-date_publication")
+    ).order_by("-date_publication","-id")
 
     html = render_to_string(
         "miningText/partials/article_list_index.html",
@@ -71,7 +71,7 @@ def search_articles(request):
 
 # Transform - Afficher le module Transform
 def transform(request):
-    articles = Article.objects.all().order_by('-id')
+    articles = Article.objects.all().order_by('-date_publication','-id')
 
     return render(
         request,
@@ -146,6 +146,9 @@ def update(request, id):
         article.titre = request.POST.get('titre')
         article.contenu = request.POST.get('contenu')
         article.auteur = request.POST.get('auteur')
+        article.date_publication = request.POST.get('date_publication')
+        article.source = request.POST.get('source')
+        article.source_lien = request.POST.get('source_lien')
         article.save()
         return redirect('detail', id=article.id)
     

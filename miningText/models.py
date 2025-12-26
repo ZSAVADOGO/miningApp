@@ -5,6 +5,8 @@ class Article(models.Model):
     titre = models.CharField(max_length=200)
     auteur = models.CharField(max_length=100)
     contenu = models.TextField()
+    source = models.TextField()
+    source_lien = models.TextField()
     date_publication = models.DateTimeField(""" auto_now_add=True """)
     date_modification = models.DateTimeField(auto_now=True)
 

@@ -3,6 +3,8 @@
 import os
 import sys
 import nltk
+import unicodedata
+import spacy
 nltk.download('punkt')
 nltk.download('stopwords')
 

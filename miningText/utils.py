@@ -29,7 +29,7 @@ STOP_WORDS_PERSO = {
     "autre", "autres", "leur", "leurs",
     "mesdames", "messieurs",
     "ceux", "celles", "fois", "jours",
-    "annee", "annees", "depuis", "pendant",
+    "depuis", "pendant",
     "certain", "certaines", "peu", "peut", "peuvent",
     "mettre", "voir", "donner", "venir", "prendre",
     "vouloir", "falloir", "trouver", "laisser",
@@ -38,6 +38,8 @@ STOP_WORDS_PERSO = {
     "parce",
     "parceque", "quand", "lorsque", "puisque",
     "toutefois", "cependant", "neanmoins",
+
+    "chaque","jour"
     
 }
 
@@ -48,25 +50,31 @@ STOP_WORDS_PERSO.update({
 })
 
 STOP_WORDS_PERSO.update({
-    "etre", "sont", "est", "ete", "sera",
+    "sont", "est", "ete", "sera",
     "avoir", "avons", "ont", "avait",
     "aller", "vais", "va", "allons",
     "faire", "fait", "font",
-    "falloir", "faut", "faudra"
-})
+    "falloir", "faut", "faudra",
+    "peut", "peuvent",
+    
+    "dire", "dit", "disent",
+    "voir", "vu", "voient",
 
-STOP_WORDS_PERSO.update({
     "nous", "vous", "ils", "elles", "on",
     "nos", "vos", "leurs",
-    "notre", "votre", "leur",
-    "moi", "toi", "lui", 
+    "notre", "votre", "moi", "toi", 
     "meme", "memes",
     "mon", "ton", "son",
     "ma", "ta", "sa",
     "me", "te", "se", "le", "la", "les",
     "je", "tu", "il", "elle",
     "ce", "cet", "cette", "ces",
-    "celui", "celle", "ceux"
+    "celui", "celle", "ceux",
+    "soit", "soient","encore","aussi","trop","tres","bien",
+
+    "sommes","etes","suis","es","et","ne","pas","plus","non","ni",
+    "que","qui","quoi","dont","ou","lors","lorsqu","quand","comme",
+    "si","y","en","lui","leur",
 })
 
 MOTS_AFFICHAGE_MAJ = {
@@ -74,7 +82,20 @@ MOTS_AFFICHAGE_MAJ = {
     "etat": "État",
     "nation": "Nation",
     "republique": "République",
-    "constitution": "Constitution"
+    "constitution": "Constitution",
+    "democratie": "Démocratie",
+    "russie": "Russie",
+    "france": "France",
+    "europe": "Europe",
+    "afrique": "Afrique",
+    "burkina": "Burkina", "burkinabe": "Burkinabe","burkinabes": "Burkinabes",
+    "mpsr": "MPSR",
+    "cedeao": "CEDEAO",
+    "faso": "Faso",
+    "niger": "Niger",
+    "africain": "Africain","africains": "Africains",
+    "africaine": "Africaine",
+    "compatriotes": "Compatriotes","patriotes": "Patriotes",
 }
 
 
@@ -102,11 +123,11 @@ def pre_nettoyage_texte(texte: str) -> str:
     texte = re.sub(r"[^a-zàâçéèêëîïôûùüÿñæœ\s-]", " ", texte)
     return texte
 
-
+# 🔹 Fonction principale
 def analyse_texte(texte: str):
-
     texte = pre_nettoyage_texte(texte)
 
+    # Tokenisation
     tokens = [
         normaliser(m)
         for m in word_tokenize(texte, language="french")
@@ -115,37 +136,42 @@ def analyse_texte(texte: str):
 
     total_mots = len(tokens)
 
+
+
+    # Filtrage mots pertinents
     mots_pertinents = [
         mot for mot in tokens
         if mot not in STOP_WORDS_PERSO and len(mot) >= 4
     ]
 
+    # Comptage occurrences
     compteur = Counter(mots_pertinents)
 
-    # 🔹 seuil dynamique
-    if total_mots < 200:
+    # 🔹 Seuil dynamique basé sur les mots pertinents
+    total_pertinents = sum(compteur.values())
+    if total_pertinents < 200:
         seuil = 1
-    elif total_mots < 600:
+    elif total_pertinents < 460:
         seuil = 2
     else:
         seuil = 3
 
-    frequences = []
+    # Préparer la liste des mots à afficher (après seuil)
+    mots_affiches = []
     for mot, freq in compteur.items():
         if freq >= seuil:
             mot_affiche = MOTS_AFFICHAGE_MAJ.get(mot, mot)
-            frequences.append((mot_affiche, freq))
+            mots_affiches.append((mot_affiche, freq))
 
-    frequences.sort(key=lambda x: x[1], reverse=True)
+    # Tri par fréquence
+    mots_affiches.sort(key=lambda x: x[1], reverse=True)
 
     return {
-        "total_mots_contenu": total_mots,
-        "total_mots_pertinents": len(mots_pertinents),
+        "total_mots_contenu": total_mots,                # tous les mots du texte
+        "total_mots_pertinents": sum(freq for _, freq in mots_affiches),  # somme occurrences filtrées
         "seuil": seuil,
-        "frequences": frequences[:20]
+        "frequences": mots_affiches                      # liste complète pour pagination
     }
-
-
 
 def analyse_texte2(texte):
     texte = texte.lower()

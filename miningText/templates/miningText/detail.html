@@ -12,9 +12,14 @@
 
     <!-- Métadonnées -->
     <p class="text-sm text-gray-500 mb-6">
-        Publié le {{ article.date_publication|date:"d/m/Y à H:i" }}
+        Publié le {{ article.date_publication|date:"d/m/Y" }}
         · par <span class="font-medium text-gray-700">{{ article.auteur }}</span>
     </p>
+
+   <span class="inline-block bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full mb-4">
+     <B> Source :</B> {{ article.source }} </span> 
+     <a target="_blank" href="{{ article.source_lien }}" class="inline-block bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full mb-4">
+      Lien</a>
 
     <!-- Contenu -->
     <div class="prose prose-gray max-w-none mb-8">

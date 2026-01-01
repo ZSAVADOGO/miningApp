@@ -5,3 +5,6 @@ pdfplumber
 python-docx
 nltk
 spacy
+pandas
+openpyxl
+xhtml2pdf>=0.2.7

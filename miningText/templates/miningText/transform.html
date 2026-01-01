@@ -66,7 +66,92 @@
     </div>
 </div>
 
+<!-- ⚙️ SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    // --------------------------
+    // Chargement article AJAX
+    // --------------------------
+    function loadArticle(id, btn) {
+        document.querySelectorAll('.article-btn').forEach(b => {
+            b.classList.remove('bg-blue-100', 'border-blue-400');
+        });
+        btn.classList.add('bg-blue-100', 'border-blue-400');
+
+        fetch(`/miningText/ajax/article/${id}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("article-detail").innerHTML = data.article_html;
+                document.getElementById("article-analyse").innerHTML = data.analyse_html;
+            });
+    }
+
+    // Expose la fonction globalement pour que onclick puisse la trouver
+    window.loadArticle = loadArticle;
+
+    function chargerPage(page, articleId) {
+    fetch(`/miningText/ajax/article/${articleId}/?page=${page}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("article-analyse").innerHTML = data.analyse_html;
+        });
+}
+
+// Expose globalement
+window.chargerPage = chargerPage;
+
+
+    // --------------------------
+    // Recherche et bouton clear
+    // --------------------------
+    const searchInput = document.getElementById("searchInput");
+    const articleList = document.getElementById("article-list");
+    const clearBtn = document.getElementById("clearSearch");
+    let timer = null;
+
+    if (searchInput && clearBtn && articleList) {
+
+        // Afficher / masquer le bouton clear
+        searchInput.addEventListener("input", () => {
+            if(searchInput.value.trim() !== "") {
+                clearBtn.classList.remove("hidden");
+            } else {
+                clearBtn.classList.add("hidden");
+            }
+        });
+
+        // Bouton clear
+        clearBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            clearBtn.classList.add("hidden");
+
+            fetch(`/miningText/search/?q=`)
+                .then(response => response.text())
+                .then(html => {
+                    articleList.innerHTML = html;
+                });
+        });
+
+        // Recherche avec debounce
+        searchInput.addEventListener("input", function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                const query = searchInput.value.trim();
+                fetch(`/miningText/search/?q=${encodeURIComponent(query)}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        articleList.innerHTML = html;
+                    });
+            }, 300);
+        });
+    }
+
+});
+</script>
+
+
+{% comment %} 
 <!-- ⚙️ SCRIPT -->
 <script>
 function loadArticle(id, btn) {
@@ -128,7 +213,7 @@ searchInput.addEventListener("input", function () {
             });
     }, 300); // debounce doux
 });
-</script>
+</script> {% endcomment %}
 
 
 

@@ -1,14 +1,26 @@
-<h3 class="text-lg font-semibold text-gray-800 mb-3">Analyse du contenu</h3>
-<div class="grid grid-cols-2 gap-4 mb-6">
-    <div class="bg-blue-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500">Total Mot </p>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Analyse du contenu</h3>
+
+<div class="grid grid-cols-3 gap-4 mb-2">
+    <div class="bg-blue-50 rounded-lg p-2">
+        <p class="text-xs text-gray-500">Total Mots</p>
         <p class="text-xl font-bold text-blue-700">{{ analyse.total_mots_contenu }}</p>
     </div>
-    <div class="bg-green-50 rounded-lg p-4">
-        <p class="text-xs text-gray-500">Mots pertinents</p>
+    <div class="bg-green-50 rounded-lg p-2">
+        <p class="text-xs text-gray-500">Mots clés</p>
         <p class="text-xl font-bold text-green-700">{{ analyse.total_mots_pertinents }}</p>
     </div>
+    <div class="bg-yellow-50 rounded-lg p-2">
+        <p class="text-xs text-gray-500">Mots affich.</p>
+        <p class="text-xl font-bold text-yellow-700">{{ mots_affiches }}</p>
+    </div>
+   {% comment %}  <a href="{% url 'export_excel' article.id %}" class="btn btn-sm btn-success">
+    Excel
+</a>
+<a href="{% url 'export_pdf' article.id %}" class="btn btn-sm btn-danger">
+    pdf
+</a> {% endcomment %}
 </div>
+
 <table class="w-full text-sm border rounded-lg overflow-hidden">
     <thead class="bg-gray-100">
         <tr>
@@ -17,7 +29,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for mot, freq in analyse.frequences %}
+        {% for mot, freq in page_obj %}
         <tr class="border-t">
             <td class="px-4 py-2">{{ mot }}</td>
             <td class="px-4 py-2 text-right font-medium">{{ freq }}</td>
@@ -25,3 +37,71 @@
         {% endfor %}
     </tbody>
 </table>
+
+<div class="mt-3 flex flex-wrap gap-2 justify-center items-center">
+    {% with page_range=page_obj.paginator.page_range %}
+        {% if page_obj.paginator.num_pages <= 10 %}
+            {# Afficher toutes les pages si peu nombreuses #}
+            {% for num in page_range %}
+                {% if page_obj.number == num %}
+                    <button class="px-2 py-1 rounded bg-blue-600 text-white">{{ num }}</button>
+                {% else %}
+                    <button onclick="chargerPage({{ num }}, {{ article.id }})"
+                            class="px-2 py-1 rounded bg-gray-200 hover:bg-blue-500 hover:text-white">
+                        {{ num }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {# 3 premières pages #}
+            {% for num in page_range|slice:":3" %}
+                {% if page_obj.number == num %}
+                    <button class="px-2 py-1 rounded bg-blue-600 text-white">{{ num }}</button>
+                {% else %}
+                    <button onclick="chargerPage({{ num }}, {{ article.id }})"
+                            class="px-2 py-1 rounded bg-gray-200 hover:bg-blue-500 hover:text-white">
+                        {{ num }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+
+            {# Ellipse si nécessaire #}
+            {% if page_obj.number > 5 %}
+                <span class="px-2 py-1">…</span>
+            {% endif %}
+
+            {# Pages autour de la page courante #}
+            {% for num in page_range %}
+                {% if num >= page_obj.number|add:"-1" and num <= page_obj.number|add:"1" %}
+                    {% if num > 3 and num < page_obj.paginator.num_pages|add:"-2" %}
+                        {% if page_obj.number == num %}
+                            <button class="px-2 py-1 rounded bg-blue-600 text-white">{{ num }}</button>
+                        {% else %}
+                            <button onclick="chargerPage({{ num }}, {{ article.id }})"
+                                    class="px-2 py-1 rounded bg-gray-200 hover:bg-blue-500 hover:text-white">
+                                {{ num }}
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {# Ellipse avant les dernières pages #}
+            {% if page_obj.number < page_obj.paginator.num_pages|add:"-4" %}
+                <span class="px-2 py-1">…</span>
+            {% endif %}
+
+            {# 3 dernières pages #}
+            {% for num in page_range|slice:"-3:" %}
+                {% if page_obj.number == num %}
+                    <button class="px-2 py-1 rounded bg-blue-600 text-white">{{ num }}</button>
+                {% else %}
+                    <button onclick="chargerPage({{ num }}, {{ article.id }})"
+                            class="px-2 py-1 rounded bg-gray-200 hover:bg-blue-500 hover:text-white">
+                        {{ num }}
+                    </button>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>

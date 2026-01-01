@@ -16,7 +16,10 @@ urlpatterns = [
     path('delete/<int:id>/', views.delete, name='delete'),
     #path("ajax/search/", views.search_articles, name="search_articles"),
     path("search/", views.search_articles, name="article_search"),
-    path("search_index/", views.search_articles_index, name="search_articles_index"),
+    path("search_index/", views.search_articles_index, name="search_articles_index"), 
+
+    path("export_excel/<int:id>/", views.export_excel, name="export_excel"),
+    path("export_pdf/<int:id>/", views.export_pdf, name="export_pdf"),
 
 
         # Route AJAX pour récupérer le détail d’un article

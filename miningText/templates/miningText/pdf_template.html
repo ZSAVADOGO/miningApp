@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse Article {{ article.id }}</title>
+    <style>
+        body {
+            font-family: DejaVu Sans, Arial, sans-serif;
+            font-size: 12px;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            margin-bottom: 10px;
+        }
+        .totaux {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .totaux div {
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .totaux .total-mots { background-color: #dbeafe; }
+        .totaux .mots-cles { background-color: #dcfce7; }
+        .totaux .mots-affiches { background-color: #fef3c7; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 6px 10px;
+        }
+        th {
+            background-color: #f3f4f6;
+            text-align: left;
+        }
+        td.text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>Analyse de l'article : {{ article.titre }}</h1>
+    <h2>Par : {{ article.auteur }}</h2>
+    <p>Publié le : {{ article.date_publication|date:"d/m/Y" }}</p>
+
+    <div class="totaux">
+        <div class="total-mots">
+            <p>Total mots</p>
+            <strong>{{ analyse.total_mots_contenu }}</strong>
+        </div>
+        <div class="mots-cles">
+            <p>Mots clés</p>
+            <strong>{{ analyse.total_mots_pertinents }}</strong>
+        </div>
+        <div class="mots-affiches">
+            <p>Mots affichés</p>
+            <strong>{{ mots_affiches }}</strong>
+        </div>
+    </div>
+
+    <h3>Liste des mots pertinents</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mot</th>
+                <th class="text-right">Occurrences</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mot, freq in analyse.frequences %}
+            <tr>
+                <td>{{ mot }}</td>
+                <td class="text-right">{{ freq }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

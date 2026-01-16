@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     # Page principale (liste + div droite vide)
-    path('transform/', views.transform, name='transform'),
+    path('analyse/', views.transform, name='analyse'),
 
     # AJAX uniquement (PAS de page complète)
     path('ajax/article/<int:id>/', views.transform_ajax, name='transform_ajax'),        # AJAX

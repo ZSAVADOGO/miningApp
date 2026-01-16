@@ -210,6 +210,6 @@ def delete(request, id):
     
     if request.method == 'POST':
         article.delete()
-        return redirect('transform')
+        return redirect('analyse')
     
     return render(request, 'miningText/delete.html', {'article': article})

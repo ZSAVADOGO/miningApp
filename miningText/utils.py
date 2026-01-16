@@ -86,10 +86,15 @@ MOTS_AFFICHAGE_MAJ = {
     "democratie": "Démocratie",
     "russie": "Russie",
     "france": "France",
+    "fracais": "Français","francais": "Français","francaise": "Française","francaises": "Françaises", 
+    "russe": "Russe","russes": "Russes",
+    "amerique": "Amérique",
     "europe": "Europe",
     "afrique": "Afrique",
     "burkina": "Burkina", "burkinabe": "Burkinabe","burkinabes": "Burkinabes",
     "mpsr": "MPSR",
+    "patrie": "Patrie",
+    "ouagadougou": "Ouagadougou",
     "cedeao": "CEDEAO",
     "faso": "Faso",
     "niger": "Niger",
@@ -100,12 +105,7 @@ MOTS_AFFICHAGE_MAJ = {
 
 
 def normaliser(mot: str) -> str:
-    """
-    Normalise un mot pour l'analyse :
-    - minuscules
-    - suppression des accents
-    - gestion œ / æ
-    """
+
     mot = mot.lower()
     mot = mot.replace("œ", "oe").replace("æ", "ae")
 
@@ -172,47 +172,6 @@ def analyse_texte(texte: str):
         "seuil": seuil,
         "frequences": mots_affiches                      # liste complète pour pagination
     }
-
-def analyse_texte2(texte):
-    texte = texte.lower()
-    tokens = [m for m in word_tokenize(texte) if m.isalpha()]
-
-    total_mots = len(tokens)
-
-    stop_words = set(stopwords.words("french"))
-    stop_words.update({
-        "plus", "cela","cette", "aussi", "tant", "comme", "ainsi",
-        "être", "avoir", "faire", "dire", "aller"
-    })
-
-    mots_impact = [
-        mot for mot in tokens
-        if mot not in stop_words and len(mot) >= 4
-    ]
-
-    compteur = Counter(mots_impact)
-
-    # 🎯 seuil adaptatif
-    if total_mots < 100:
-        seuil = 1
-    elif total_mots < 500:
-        seuil = 2
-    else:
-        seuil = 3
-
-    mots_significatifs = {
-        mot: freq for mot, freq in compteur.items()
-        if freq >= seuil
-    }
-
-    return {
-        "total_mots_contenu": total_mots,
-        "total_mots_pertinents": sum(mots_significatifs.values()),
-        "frequences": Counter(mots_significatifs).most_common(20),
-        "seuil_utilise": seuil
-    }
-
-
 
 def extract_text_from_file(uploaded_file):
     name = uploaded_file.name.lower()
